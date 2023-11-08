@@ -2,6 +2,8 @@
 
 A simple web application that allows you to generate JSON paths from JSON data and log the results to a file on the server.
 
+![screenshot of app interface](image.png)
+
 ## Features
 
 - Input JSON data manually or upload a JSON file.
