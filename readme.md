@@ -66,6 +66,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Authors
 
-- Created by [Your Name](https://github.com/yourusername)
-- Prompted by [Your Name](https://github.com/yourusername)
+- Created by [Kai](https://github.com/kai-wss/)
+- Prompted by [Kai](https://github.com/kai-wss/)
 - Developed with ❤️ by [ChatGPT](https://github.com/chatgpt).
