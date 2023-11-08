@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JSON Path Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        pre {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>JSON Path Generator</h1>
+    <div class="container">
+        <label for="jsonDataInput">Enter JSON data or select a JSON file:</label>
+        <input type="file" id="jsonFileInput">
+        <textarea id="jsonDataInput" rows="10" cols="50" placeholder="Enter JSON data here..."></textarea>
+        <button onclick="processJSON()">Generate JSON Path</button>
+        <button onclick="logJSON()">Log JSON Output</button>
+
+        <h2>Generated JSON Path:</h2>
+        <pre id="jsonOutput"></pre>
+    </div>
+
+    <script>
+        function traverseJSON(jsonObject, path = "") {
+            const newObject = {};
+
+            for (const key in jsonObject) {
+                if (typeof jsonObject[key] === "object") {
+                    if (Array.isArray(jsonObject[key])) {
+                        newObject[key] = [traverseJSON(jsonObject[key][0], `${path}.${key}[*]`)];
+                    } else {
+                        newObject[key] = traverseJSON(jsonObject[key], `${path}.${key}`);
+                    }
+                } else {
+                    newObject[`${key}`] = `${path}.${key}`;
+                }
+            }
+
+            return newObject;
+        }
+
+        document.getElementById("jsonFileInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const jsonDataInput = document.getElementById("jsonDataInput");
+                    jsonDataInput.value = event.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function processJSON() {
+            const jsonDataInput = document.getElementById("jsonDataInput");
+            const jsonOutput = document.getElementById("jsonOutput");
+
+            const jsonData = jsonDataInput.value;
+
+            if (!jsonData) {
+                alert("Please provide JSON data.");
+                return;
+            }
+
+            let jsonDataObject;
+
+            if (jsonData) {
+                try {
+                    jsonDataObject = JSON.parse(jsonData);
+                } catch (error) {
+                    alert("Invalid JSON data.");
+                    return;
+                }
+            }
+
+            const jsonPath = traverseJSON(jsonDataObject);
+
+            jsonOutput.textContent = JSON.stringify(jsonPath, null, 2);
+        }
+        function logJSON() {
+            const jsonOutput = document.getElementById("jsonOutput").textContent;
+
+            fetch('/log-json-output', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ jsonOutput }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    alert(data);
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Error logging JSON output.');
+                });
+        }
+    </script>
+</body>
+
+</html>

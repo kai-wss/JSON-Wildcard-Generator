@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "first_name": ".results[*].first_name",
+      "last_name": ".results[*].last_name",
+      "birthday": {
+        "month": ".results[*].birthday.month",
+        "nestedArray": [
+          {
+            "nestedProp1": ".results[*].birthday.nestedArray[*].nestedProp1",
+            "nestedProp2": ".results[*].birthday.nestedArray[*].nestedProp2"
+          }
+        ]
+      }
+    }
+  ]
+}
