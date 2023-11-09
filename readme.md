@@ -1,4 +1,4 @@
-# JSON Output Generator
+# JSON-Wildcard-Generator
 
 A simple web application that allows you to generate JSON paths from JSON data and log the results to a file on the server.
 
@@ -20,13 +20,13 @@ A simple web application that allows you to generate JSON paths from JSON data a
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/json-output-generator.git
+   git clone https://github.com/yourusername/JSON-Wildcard-Generator.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd json-output-generator
+   cd JSON-Wildcard-Generator
    ```
 
 3. Install the required dependencies:
